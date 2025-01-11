@@ -115,11 +115,12 @@ cp 20-wired.network $rootfs/etc/systemd/network/20-wired.network
 cp smb.conf $rootfs/etc/samba/smb.conf
 cat id_rsa.pub > $rootfs/home/$username/.ssh/authorized_keys
 
-# copy kernel + initrd
+# prepare kernel and initrd
 
 mkdir -p $image/casper
 cp $rootfs/boot/vmlinuz-**-**-generic $image/casper/vmlinuz
 cp $rootfs/boot/initrd.img-**-**-generic $image/casper/initrd
+./patch-initrd.sh $image/casper/initrd initrd-overlay
 
 # squash rootfs
 
