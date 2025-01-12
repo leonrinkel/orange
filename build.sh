@@ -67,7 +67,7 @@ LANG=C DEBIAN_FRONTEND=noninteractive chroot $rootfs /bin/bash <<EOT
 apt-get update -yq
 apt-get upgrade -yq
 apt-get install -yq linux-generic ubuntu-server-minimal casper
-apt-get install -yq openssh-server zfsutils-linux samba
+apt-get install -yq openssh-server zfsutils-linux samba avahi-daemon
 apt-get autoremove -yq
 apt-get clean -yq
 
@@ -77,6 +77,7 @@ systemctl enable systemd-networkd.service
 systemctl enable ssh.service
 systemctl enable zfs-import-scan.service
 systemctl enable zfs-scrub-weekly@pool.timer
+systemctl enable avahi-daemon.service
 
 # add user
 
@@ -124,6 +125,7 @@ umount -lf $rootfs/tmp
 
 cp 20-wired.network $rootfs/etc/systemd/network/20-wired.network
 cp smb.conf $rootfs/etc/samba/smb.conf
+cp smb.service $rootfs/etc/avahi/services/smb.service
 cat id_rsa.pub > $rootfs/home/$username/.ssh/authorized_keys
 
 # copy kernel and initrd
