@@ -20,6 +20,7 @@ mirror=http://de.archive.ubuntu.com/ubuntu
 
 username=leon
 password=secret
+hostname=orange
 
 rootfs=rootfs
 image=image
@@ -95,6 +96,15 @@ touch /home/$username/.ssh/authorized_keys
 chmod 644 /home/$username/.ssh/authorized_keys
 chown -R $username:$username /home/$username/.ssh
 
+cat <<EOF > /etc/casper.conf
+export USERNAME="ubuntu"
+export USERFULLNAME="Live session user"
+export HOST="$hostname"
+export BUILD_SYSTEM="Ubuntu"
+EOF
+
+update-initramfs -k all -u
+
 exit
 
 EOT
@@ -115,12 +125,11 @@ cp 20-wired.network $rootfs/etc/systemd/network/20-wired.network
 cp smb.conf $rootfs/etc/samba/smb.conf
 cat id_rsa.pub > $rootfs/home/$username/.ssh/authorized_keys
 
-# prepare kernel and initrd
+# copy kernel and initrd
 
 mkdir -p $image/casper
 cp $rootfs/boot/vmlinuz-**-**-generic $image/casper/vmlinuz
 cp $rootfs/boot/initrd.img-**-**-generic $image/casper/initrd
-./patch-initrd.sh $image/casper/initrd initrd-overlay
 
 # squash rootfs
 
