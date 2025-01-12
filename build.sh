@@ -76,6 +76,7 @@ apt-get clean -yq
 systemctl enable systemd-networkd.service
 systemctl enable ssh.service
 systemctl enable zfs-import-scan.service
+systemctl enable zfs-scrub-weekly@pool.timer
 
 # add user
 
