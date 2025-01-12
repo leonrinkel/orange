@@ -126,6 +126,7 @@ umount -lf $rootfs/tmp
 cp 20-wired.network $rootfs/etc/systemd/network/20-wired.network
 cp smb.conf $rootfs/etc/samba/smb.conf
 cp smb.service $rootfs/etc/avahi/services/smb.service
+cp sshd_config $rootfs/etc/ssh/sshd_config
 cat id_rsa.pub > $rootfs/home/$username/.ssh/authorized_keys
 
 # copy kernel and initrd
